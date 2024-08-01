@@ -39,7 +39,7 @@ const App = () => {
       const data = await fetchData();
       setChartData(data);
       setDisplayData(data.slice(-100)); // 초기에는 최신 100개 데이터만 표시
-      console.log(data);
+      console.log("Current chart data after first fetch", data);
     };
 
     getData();
@@ -51,17 +51,18 @@ const App = () => {
     if (direction === "past" && hasMorePastData) {
       const oldestDate = chartData[0].date;
       const toTimestamp = oldestDate.toISOString();
-      const moreData = await fetchData(100, toTimestamp);
+      const moreData = await fetchData(200, toTimestamp);
 
       if (moreData.length) {
         setChartData((prevData) => [...moreData, ...prevData]);
+        console.log("chart data after fetch more", chartData);
       } else {
         setHasMorePastData(false);
       }
     } else if (direction === "future" && hasMoreFutureData) {
       const newestDate = chartData[chartData.length - 1].date;
       const fromTimestamp = newestDate.toISOString();
-      const moreData = await fetchData(100, null, fromTimestamp);
+      const moreData = await fetchData(200, null, fromTimestamp);
 
       if (moreData.length) {
         setChartData((prevData) => [...prevData, ...moreData]);
@@ -86,6 +87,18 @@ const App = () => {
         (d) => new Date(d.date) >= new Date(xRangeStart) && new Date(d.date) <= new Date(xRangeEnd)
       );
       setDisplayData(newDisplayData);
+      console.log("Current display data:", newDisplayData); // 현재 표시되고 있는 데이터를 콘솔에 출력
+    }
+
+    if (event["xaxis.autorange"]) {
+      const latestDate = displayData[displayData.length - 1]?.date;
+      if (latestDate) {
+        const latestVisibleIndex = chartData.findIndex((d) => d.date.getTime() === latestDate.getTime());
+        const startIndex = Math.max(0, latestVisibleIndex - 99);
+        const latest100Data = chartData.slice(startIndex, latestVisibleIndex + 1);
+        setDisplayData(latest100Data);
+        console.log("Current display data after autoscale:", latest100Data); // autoscale 후 표시되는 데이터를 콘솔에 출력
+      }
     }
   };
 
@@ -114,7 +127,7 @@ const App = () => {
   };
 
   const layout = {
-    dragmode: "zoom",
+    dragmode: "pan",
     margin: {
       r: 10,
       t: 25,
@@ -148,7 +161,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <Plot data={[trace1, trace2]} layout={layout} onRelayout={handleRelayout} />
+      <Plot
+        data={[trace1, trace2]}
+        layout={layout}
+        onRelayout={handleRelayout}
+        config={{ modeBarButtonsToAdd: ["pan2d"], displayModeBar: true }}
+      />
     </div>
   );
 };
