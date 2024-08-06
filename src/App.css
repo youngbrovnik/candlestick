@@ -40,3 +40,8 @@
 .dropdown-button {
   margin-bottom: 10px;
 }
+
+.dropdown-menu {
+  max-height: 500px;
+  overflow-y: auto;
+}
