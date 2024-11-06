@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/candlestick/static/css/main.38a7f046.css",
+    "main.js": "/candlestick/static/js/main.2ad3cbfb.js",
+    "index.html": "/candlestick/index.html",
+    "main.38a7f046.css.map": "/candlestick/static/css/main.38a7f046.css.map",
+    "main.2ad3cbfb.js.map": "/candlestick/static/js/main.2ad3cbfb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38a7f046.css",
+    "static/js/main.2ad3cbfb.js"
+  ]
+}
