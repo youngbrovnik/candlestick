@@ -5,7 +5,6 @@ import axios from "axios";
 import { Dropdown, DropdownButton, FormCheck } from "react-bootstrap";
 import { SMA, BollingerBands } from "technicalindicators";
 import { useParams } from "react-router-dom";
-import { formatDate } from "./utils"; // formatDate 함수 임포트
 import "./PlotPage.css";
 
 const intervals = {
@@ -252,6 +251,13 @@ const PlotPage = () => {
             type: "candlestick",
             xaxis: "x",
             yaxis: "y",
+            hovertemplate:
+              "날짜: %{x|%Y-%m-%d}<br>" +
+              "시가: %{open}<br>" +
+              "고가: %{high}<br>" +
+              "저가: %{low}<br>" +
+              "종가: %{close}<br>" +
+              "<extra></extra>",
           },
           ...(selectedIndicators.includes("볼륨")
             ? [
@@ -264,6 +270,7 @@ const PlotPage = () => {
                   marker: {
                     color: displayData.map((d) => (d.close > d.open ? upColor : downColor)),
                   },
+                  hovertemplate: "%{x|%Y-%m-%d}<br>거래량: %{y}<extra></extra>",
                 },
               ]
             : []),

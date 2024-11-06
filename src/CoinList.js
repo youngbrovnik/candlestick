@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Plot from "react-plotly.js";
 import { Link } from "react-router-dom";
-import { formatDate } from "./utils"; // formatDate 함수 임포트
 import "./CoinList.css";
 
 const CoinList = () => {
@@ -84,6 +83,7 @@ const CoinList = () => {
                 type: "scatter",
                 mode: "lines",
                 line: { color: "blue" },
+                hovertemplate: "%{x|%Y-%m-%d}<br>종가: %{y}<extra></extra>",
               },
             ]}
             layout={{
